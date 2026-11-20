@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block judul %}Donor{% endblock %}
+{% block isi %}
+<div class="judul-halaman"><h1>Donor</h1><span class="redup">Registrasi dan daftar donor (data fiktif)</span></div>
+<div class="dua-kolom">
+  <div class="kartu"><h2>Daftarkan donor</h2>
+    <form class="isian" method="post">
+      <label>Nama<input name="nama" required maxlength="80"></label>
+      <div class="baris">
+        <label>Tanggal lahir<input type="date" name="tanggal_lahir" required></label>
+        <label>Berat badan (kg)<input type="number" name="berat_badan" step="0.1" min="1" required></label>
+      </div>
+      <div class="baris">
+        <label>Jenis kelamin<select name="jenis_kelamin">
+          {% for j in jenis_kelamin %}<option value="{{ j.name }}">{{ j.value }}</option>{% endfor %}</select></label>
+        <label>Golongan darah<select name="golongan_darah">
+          {% for g in semua_golongan %}<option value="{{ g.name }}">{{ g.label }}</option>{% endfor %}</select></label>
+      </div>
+      <button type="submit">Daftarkan</button>
+    </form></div>
+  <div class="kartu"><h2>Daftar donor ({{ daftar|length }})</h2>
+    {% if daftar %}
+    <div class="gulir"><table>
+      <thead><tr><th>ID</th><th>Nama</th><th>Gol.</th><th>Donasi terakhir</th></tr></thead>
+      <tbody>{% for d in daftar %}
+        <tr><td>{{ d.id_donor }}</td><td>{{ d.nama }}<br><span class="redup">{{ d.jenis_kelamin.value }}, {{ d.berat_badan }} kg</span></td>
+            <td><span class="golongan">{{ d.golongan_darah.label }}</span></td>
+            <td>{{ d.donasi_terakhir()|tgl if d.donasi_terakhir() else '-' }}</td></tr>
+      {% endfor %}</tbody></table></div>
+    {% else %}<div class="kosong">Belum ada donor. Daftarkan donor pertama.</div>{% endif %}
+  </div>
+</div>
+{% endblock %}

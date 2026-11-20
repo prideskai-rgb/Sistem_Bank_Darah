@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block judul %}Tidak ditemukan{% endblock %}
+{% block isi %}
+<div class="kartu kosong"><h1>Halaman tidak ditemukan</h1>
+  <p><a href="{{ url_for('beranda.beranda') }}">Kembali ke beranda</a></p></div>
+{% endblock %}

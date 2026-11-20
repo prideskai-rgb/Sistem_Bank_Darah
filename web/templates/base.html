@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block judul %}Simulasi UTD{% endblock %} | Simulasi UTD</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="kepala"><div class="kepala-isi">
+  <a class="merek" href="{{ url_for('beranda.beranda') }}"><i></i> Simulasi UTD</a>
+  <nav>
+    {% for tujuan, nama in [('beranda.beranda','Beranda'), ('donor.donor','Donor'),
+        ('pendonoran.pendonoran','Pendonoran'), ('stok.stok','Stok'),
+        ('permintaan.permintaan','Permintaan'), ('penelusuran.penelusuran','Penelusuran'),
+        ('parameter.parameter','Parameter')] %}
+    <a href="{{ url_for(tujuan) }}" class="{{ 'aktif' if request.blueprint == tujuan.split('.')[0] }}">{{ nama }}</a>
+    {% endfor %}
+  </nav>
+</div></header>
+<main>
+  <div class="banner"><b>Simulasi pembelajaran.</b> Memakai data fiktif; bukan untuk keputusan klinis dan bukan pengganti sistem resmi UTD/PMI.</div>
+  {% if parameter_belum_terverifikasi %}
+  <div class="banner">Angka aturan medis masih <b>nilai demo (belum terverifikasi)</b>. Lihat halaman Parameter.</div>
+  {% endif %}
+  {% for kategori, isi in get_flashed_messages(with_categories=true) %}
+  <div class="pesan {{ kategori }}" role="status">{{ isi }}</div>
+  {% endfor %}
+  {% block isi %}{% endblock %}
+</main>
+<footer>
+  <span>ISP132 Pemrograman Berorientasi Objek, Universitas Jambi. Kelompok 1.</span>
+  <form method="post" action="{{ url_for('reset.reset') }}" onsubmit="return confirm('Kembalikan semua data ke data demo?');">
+    <button class="sekunder" type="submit">Reset data demo</button>
+  </form>
+</footer>
+</body>
+</html>

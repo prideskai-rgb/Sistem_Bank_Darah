@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block judul %}Beranda{% endblock %}
+{% block isi %}
+<div class="judul-halaman"><h1>Beranda</h1>
+  <span class="redup">Ringkasan stok per {{ hari_ini|tgl }}</span></div>
+
+<div class="statistik">
+  <div class="angka"><b>{{ ringkasan.jumlah_donor }}</b><span>Donor terdaftar</span></div>
+  <div class="angka"><b>{{ ringkasan.jumlah_tersedia }}</b><span>Kantong layak pakai</span></div>
+  <div class="angka awas"><b>{{ ringkasan.hampir_kedaluwarsa|length }}</b><span>Hampir kedaluwarsa</span></div>
+  <div class="angka bahaya"><b>{{ ringkasan.sudah_kedaluwarsa|length }}</b><span>Sudah kedaluwarsa</span></div>
+</div>
+
+{% if ringkasan.hampir_kedaluwarsa or ringkasan.sudah_kedaluwarsa %}
+<div class="kartu"><h2>Peringatan kedaluwarsa</h2>
+  <div class="gulir"><table>
+    <thead><tr><th>Kantong</th><th>Golongan</th><th>Komponen</th><th>Kedaluwarsa</th><th>Keterangan</th></tr></thead>
+    <tbody>
+    {% for k in ringkasan.hampir_kedaluwarsa %}
+      <tr><td>{{ k.id_kantong }}</td><td><span class="golongan">{{ k.golongan_darah.label }}</span></td>
+          <td>{{ k.komponen.nama }}</td><td>{{ k.tanggal_kedaluwarsa()|tgl }}</td>
+          <td><span class="lencana awas">Sisa {{ k.sisa_hari(hari_ini) }} hari</span></td></tr>
+    {% endfor %}
+    {% for k in ringkasan.sudah_kedaluwarsa %}
+      <tr><td>{{ k.id_kantong }}</td><td><span class="golongan">{{ k.golongan_darah.label }}</span></td>
+          <td>{{ k.komponen.nama }}</td><td>{{ k.tanggal_kedaluwarsa()|tgl }}</td>
+          <td><span class="lencana bahaya">Kedaluwarsa, tidak dipakai</span></td></tr>
+    {% endfor %}
+    </tbody></table></div></div>
+{% endif %}
+
+<div class="kartu"><h2>Stok per golongan darah</h2>
+  <div class="gulir"><table>
+    <thead><tr><th>Komponen</th>
+      {% for g in semua_golongan %}<th class="tengah">{{ g.label }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for nama in komponen %}
+      <tr><td><b>{{ nama }}</b></td>
+        {% for g in semua_golongan %}
+          {% set n = matriks[nama].get(g, 0) %}
+          <td class="tengah n{{ 0 if n == 0 else (1 if n == 1 else 2) }}">{{ n }}</td>
+        {% endfor %}</tr>
+    {% endfor %}
+    </tbody></table></div></div>
+{% endblock %}
