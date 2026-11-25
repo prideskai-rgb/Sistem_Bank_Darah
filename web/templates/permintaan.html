@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block judul %}Permintaan{% endblock %}
+{% block isi %}
+<div class="judul-halaman"><h1>Permintaan darah</h1>
+  <span class="redup">Sistem memilih kantong yang cocok dan paling cepat kedaluwarsa</span></div>
+<div class="dua-kolom">
+  <div class="kartu"><h2>Ajukan permintaan</h2>
+    <form class="isian" method="post">
+      <div class="baris">
+        <label>Golongan penerima<select name="golongan_penerima">
+          {% for g in semua_golongan %}<option value="{{ g.name }}">{{ g.label }}</option>{% endfor %}</select></label>
+        <label>Komponen<select name="komponen">
+          {% for nama in komponen %}<option>{{ nama }}</option>{% endfor %}</select></label>
+      </div>
+      <div class="baris">
+        <label>Jumlah kantong<input type="number" name="jumlah" min="1" value="1" required></label>
+        <label>Tanggal<input type="date" name="tanggal" value="{{ hari_ini.isoformat() }}" required></label>
+      </div>
+      <button type="submit">Proses permintaan</button>
+    </form></div>
+  <div class="kartu"><h2>Cara kerja</h2>
+    <ol class="redup" style="margin:0 0 14px; padding-left:18px;">
+      <li>Hanya kantong yang belum kedaluwarsa dan golongannya cocok yang dipilih.</li>
+      <li>Aturan kecocokan ditentukan oleh jenis komponennya (sel darah merah dan plasma berbeda).</li>
+      <li>Hasil: <b>Dipenuhi</b>, <b>Sebagian</b> (kantong yang diambil tetap terpakai), atau <b>Tidak terpenuhi</b>.</li>
+    </ol>
+    <table><thead><tr><th>Komponen</th><th class="tengah">Kantong layak pakai</th></tr></thead>
+      <tbody>{% for nama, n in tersedia.items() %}
+        <tr><td>{{ nama }}</td><td class="tengah"><b>{{ n }}</b></td></tr>{% endfor %}</tbody></table>
+  </div>
+</div>
+{% endblock %}
