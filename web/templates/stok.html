@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block judul %}Stok{% endblock %}
+{% block isi %}
+<div class="judul-halaman"><h1>Stok kantong darah</h1>
+  <span class="redup">Urutan FEFO: kantong yang paling cepat kedaluwarsa dipakai lebih dulu</span></div>
+<div class="kartu">
+  <form method="get" class="baris" style="grid-template-columns: 1fr auto; align-items: end;">
+    <label>Filter komponen
+      <select name="komponen">
+        <option value="">Semua komponen</option>
+        {% for nama in komponen %}<option value="{{ nama }}" {{ 'selected' if nama == dipilih }}>{{ nama }}</option>{% endfor %}
+      </select></label>
+    <button type="submit">Terapkan</button>
+  </form>
+</div>
+<div class="kartu"><h2>Kantong layak pakai ({{ kantong|length }})</h2>
+  {% if kantong %}
+  <div class="gulir"><table>
+    <thead><tr><th>Urutan</th><th>Kantong</th><th>Gol.</th><th>Komponen</th><th>Diambil</th><th>Kedaluwarsa</th><th>Sisa</th></tr></thead>
+    <tbody>
+    {% for k in kantong %}
+      <tr><td>{{ loop.index }}</td><td>{{ k.id_kantong }}</td>
+          <td><span class="golongan">{{ k.golongan_darah.label }}</span></td>
+          <td>{{ k.komponen.nama }}</td><td>{{ k.tanggal_ambil|tgl }}</td>
+          <td>{{ k.tanggal_kedaluwarsa()|tgl }}</td>
+          <td>{% if k in batas %}<span class="lencana awas">{{ k.sisa_hari(hari_ini) }} hari</span>
+              {% else %}<span class="lencana ok">{{ k.sisa_hari(hari_ini) }} hari</span>{% endif %}</td></tr>
+    {% endfor %}
+    </tbody></table></div>
+  {% else %}<div class="kosong">Tidak ada kantong layak pakai.</div>{% endif %}
+</div>
+{% endblock %}
