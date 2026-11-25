@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block judul %}Penelusuran{% endblock %}
+{% block isi %}
+
+<div class="judul-halaman">
+  <h1>Penelusuran Kantong Darah</h1>
+  <span class="redup">Telusuri informasi kantong dan riwayat pendonorannya</span>
+</div>
+
+<div class="kartu">
+  <h2>Cari Kantong Darah</h2>
+  <form class="isian" method="get">
+    <label>ID Kantong Darah
+      <input type="text" name="id_kantong"
+             value="{{ id_kantong }}"
+             placeholder="Contoh: KD001" required>
+    </label>
+    <button type="submit">Telusuri</button>
+  </form>
+</div>
+
+{% if id_kantong %}
+  {% if kantong_dicari %}
+  <div class="kartu">
+    <h2>Hasil Penelusuran</h2>
+    <table>
+      <tr><th>ID Kantong</th><td>{{ kantong_dicari.id_kantong }}</td></tr>
+      <tr><th>Golongan Darah</th><td>{{ kantong_dicari.golongan_darah.label }}</td></tr>
+      <tr><th>Komponen</th><td>{{ kantong_dicari.komponen.nama }}</td></tr>
+      <tr><th>Tanggal Pengambilan</th><td>{{ kantong_dicari.tanggal_ambil|tgl }}</td></tr>
+      <tr><th>Tanggal Kedaluwarsa</th><td>{{ kantong_dicari.tanggal_kedaluwarsa()|tgl }}</td></tr>
+      <tr><th>Status</th><td>{{ kantong_dicari.status.value }}</td></tr>
+    </table>
+  </div>
+
+  <div class="kartu">
+    <h2>Informasi Pendonoran</h2>
+    {% if hasil_pendonoran %}
+      <table>
+        <tr><th>ID Pendonoran</th><td>{{ hasil_pendonoran.id_pendonoran }}</td></tr>
+        <tr><th>Tanggal Pendonoran</th><td>{{ hasil_pendonoran.tanggal|tgl }}</td></tr>
+        <tr><th>Komponen</th><td>{{ hasil_pendonoran.nama_komponen }}</td></tr>
+      </table>
+    {% else %}
+      <p class="kosong">Informasi pendonoran tidak tersedia.</p>
+    {% endif %}
+  </div>
+
+  <div class="kartu">
+    <h2>Informasi Donor</h2>
+    {% if donor %}
+      <table>
+        <tr><th>ID Donor</th><td>{{ donor.id_donor }}</td></tr>
+        <tr><th>Nama Donor</th><td>{{ donor.nama }}</td></tr>
+        <tr><th>Golongan Darah</th><td>{{ donor.golongan_darah.label }}</td></tr>
+      </table>
+    {% else %}
+      <p class="kosong">Informasi donor tidak tersedia.</p>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <div class="kartu">
+    <p class="kosong">Kantong darah dengan ID "{{ id_kantong }}" tidak ditemukan.</p>
+  </div>
+  {% endif %}
+{% endif %}
+
+<div class="kartu">
+  <h2>Daftar Kantong Darah ({{ daftar|length }})</h2>
+  {% if daftar %}
+  <div class="gulir">
+    <table>
+      <thead>
+        <tr>
+          <th>ID Kantong</th>
+          <th>Golongan Darah</th>
+          <th>Komponen</th>
+          <th>Tanggal Pengambilan</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for kantong in daftar %}
+        <tr>
+          <td>{{ kantong.id_kantong }}</td>
+          <td>{{ kantong.golongan_darah.label }}</td>
+          <td>{{ kantong.komponen.nama }}</td>
+          <td>{{ kantong.tanggal_ambil|tgl }}</td>
+          <td>{{ kantong.status.value }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="kosong">Belum ada kantong darah yang tercatat.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
