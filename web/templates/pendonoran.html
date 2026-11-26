@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block judul %}Pendonoran{% endblock %}
+{% block isi %}
+<div class="judul-halaman">
+  <h1>Pendonoran Darah</h1>
+  <span class="redup">Pemeriksaan dan proses kelayakan donor</span>
+</div>
+
+<div class="dua-kolom">
+  <div class="kartu">
+    <h2>Formulir Pendonoran</h2>
+
+    {% if daftar %}
+    <form class="isian" method="post">
+      <label>Nama Donor
+        <select name="id_donor" required>
+          <option value="">Pilih donor</option>
+          {% for d in daftar %}
+          <option value="{{ d.id_donor }}">
+            {{ d.id_donor }} - {{ d.nama }} ({{ d.golongan_darah.label }})
+          </option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <label>Tanggal Pendonoran
+        <input type="date" name="tanggal"
+               value="{{ tanggal.isoformat() }}" required>
+      </label>
+
+      <label>Komponen Darah
+        <select name="nama_komponen" required>
+          {% for k in komponen %}
+          <option value="{{ k }}">{{ k }}</option>
+          {% endfor %}
+        </select>
+      </label>
+
+      <h3>Hasil Pemeriksaan Kesehatan</h3>
+
+      <label>Hemoglobin (g/dL)
+        <input type="number" name="hemoglobin"
+               step="0.1" min="0.1" required>
+      </label>
+
+      <div class="baris">
+        <label>Sistolik (mmHg)
+          <input type="number" name="sistolik"
+                 step="1" min="1" required>
+        </label>
+
+        <label>Diastolik (mmHg)
+          <input type="number" name="diastolik"
+                 step="1" min="1" required>
+        </label>
+      </div>
+
+      <button type="submit">Proses Pendonoran</button>
+    </form>
+    {% else %}
+    <div class="kosong">
+      Belum ada donor terdaftar. Silakan daftarkan donor terlebih dahulu.
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="kartu">
+    <h2>Informasi Pendonoran</h2>
+    <p>Isi formulir dengan data donor dan hasil pemeriksaan kesehatan.</p>
+    <p>Sistem akan memeriksa kelayakan donor berdasarkan aturan yang tersedia.</p>
+    <div class="banner">
+      <b>Catatan:</b> Aplikasi ini merupakan simulasi pembelajaran
+      menggunakan parameter demo yang belum terverifikasi.
+      Hasilnya bukan keputusan medis.
+    </div>
+  </div>
+</div>
+{% endblock %}
