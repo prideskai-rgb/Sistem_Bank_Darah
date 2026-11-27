@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block judul %}Parameter{% endblock %}
+{% block isi %}
+<div class="judul-halaman"><h1>Parameter aturan</h1>
+  <span class="redup">Semua angka aturan disimpan di aturan/parameter.py, bukan tertanam di class</span></div>
+<div class="kartu"><div class="gulir"><table>
+  <thead><tr><th>Parameter</th><th>Nilai</th><th>Keterangan</th><th>Status</th><th>Sumber</th></tr></thead>
+  <tbody>{% for kunci, p in daftar %}
+    <tr><td><code>{{ kunci }}</code></td><td><b>{{ p.nilai }}</b> {{ p.satuan }}</td><td>{{ p.keterangan }}</td>
+        <td>{% if not p.medis %}<span class="lencana abu">Parameter aplikasi</span>
+            {% elif p.terverifikasi %}<span class="lencana ok">Terverifikasi</span>
+            {% else %}<span class="lencana awas">Belum terverifikasi</span>{% endif %}</td>
+        <td class="redup">{{ p.sumber }}</td></tr>
+  {% endfor %}</tbody></table></div></div>
+{% endblock %}
