@@ -29,6 +29,7 @@ Status diisi: terverifikasi, atau tetap demo (kalau tidak ditemukan di sumber).
 - berat_minimal: batasnya tergantung volume pengambilan (55 kg untuk 450 mL, 45 kg untuk 350 mL). Tim perlu memutuskan volume yang dipakai simulasi.
 - interval_donor_hari: sumber memakai satuan bulan (2 bulan), kode memakai hari (dikonversi 60 hari).
 - Syarat yang ada di sumber tetapi belum ada di kode: denyut nadi 50 sampai 100 kali per menit, suhu tubuh 36,5 sampai 37,5 derajat C, selisih sistolik dan diastolik lebih dari 20 mmHg.
+
 - masa_simpan_sel_darah_merah dan masa_simpan_plasma: belum dicocokkan dengan sumber, tetap nilai demo.
 
 ## Catatan pribadi (R-4)
@@ -55,3 +56,4 @@ Yang paling sulit adalah alur Git dan terminal, karena beberapa kali muncul erro
 
 ### 4. Satu hal yang kupelajari
 Angka di sistem yang menyangkut kesehatan tidak boleh diisi dari tebakan. Tiap angka harus punya sumber tertulis dan statusnya harus jujur. Aku juga belajar bahwa memisahkan angka aturan dari kode membuat perubahan lebih aman.
+
